@@ -1,29 +1,27 @@
 package com.example.rickandmortykotlin22.data.repositories
 
-import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.example.rickandmortykotlin22.data.network.apiservice.LocationApiService
 import com.example.rickandmortykotlin22.data.network.dto.location.LocationDto
 import com.example.rickandmortykotlin22.data.network.paginsources.LocationPagingSource
 import com.example.rickandmortykotlin22.keeper.base.BaseRepository
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
-class LocationRepository @Inject constructor(
+class LocationRepository(
     private val service: LocationApiService
-): BaseRepository() {
+) : BaseRepository() {
 
-    fun fetchLocations(): LiveData<PagingData<LocationDto>> {
+    fun fetchLocations(): Flow<PagingData<LocationDto>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 10,
+                pageSize = 5
             ),
             pagingSourceFactory = {
                 LocationPagingSource(service)
             }
-        ).liveData
+        ).flow
     }
 
     fun fetchLocation(id: Int) = doRequest {

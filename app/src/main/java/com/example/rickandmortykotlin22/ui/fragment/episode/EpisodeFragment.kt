@@ -4,23 +4,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rickandmortykotlin22.R
 import com.example.rickandmortykotlin22.databinding.FragmentEpisodeBinding
+import com.example.rickandmortykotlin22.keeper.base.BaseFragment
 import com.example.rickandmortykotlin22.ui.adapter.EpisodeAdapter
+import com.example.rickandmortykotlin22.ui.adapter.paging.LoadStateAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+
 @AndroidEntryPoint
-class EpisodeFragment : Fragment() {
-    private val viewModel: EpisodeViewModel by viewModels()
+class EpisodeFragment :
+    BaseFragment<EpisodeViewModel, FragmentEpisodeBinding>(R.layout.fragment_episode) {
+
     private lateinit var binding: FragmentEpisodeBinding
-    private val episodeAdapter = EpisodeAdapter(this::onItemClickRecyclerItem)
+    private val viewModel: EpisodeViewModel by viewModels()
+    private val episodeAdapter = EpisodeAdapter(this::setupListeners)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,47 +38,42 @@ class EpisodeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initialize()
-        setupRequests()
+
+    override fun initialize() = with(binding) {
+        setupEpisodeRecycler()
     }
 
-    private fun initialize() {
-        setupCharacterRecycler()
-    }
-
-    private fun setupCharacterRecycler() = with(binding) {
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerView.adapter = episodeAdapter.withLoadStateFooter(
-            com.example.rickandmortykotlin22.ui.adapter.paging.LoadStateAdapter {
-                episodeAdapter.retry()
-            }
-        )
-
+    private fun setupEpisodeRecycler() = with(binding) {
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = episodeAdapter.withLoadStateFooter(LoadStateAdapter {
+            episodeAdapter.retry()
+        })
         episodeAdapter.addLoadStateListener { loadStates ->
             recyclerView.isVisible = loadStates.refresh is LoadState.NotLoading
-        }
-
-
-        swipeRefresh.setOnRefreshListener {
-            episodeAdapter.retry()
-            swipeRefresh.isRefreshing = false
-            setupRequests()
+            progressBar.isVisible = loadStates.refresh is LoadState.Loading
+            swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Loading
         }
     }
 
-    private fun setupRequests() {
-        viewModel.fetchEpisode().observe(requireActivity(), {
-            this.lifecycleScope.launch {
+    override fun setupRequest() {
+        lifecycleScope.launch {
+            viewModel.fetchEpisodes().collectLatest {
                 episodeAdapter.submitData(it)
+
             }
-        })
+        }
+        Toast.makeText(requireContext(), "Episode", Toast.LENGTH_LONG).show()
     }
 
-    private fun onItemClickRecyclerItem(id: Int){
+    private fun setupListeners(id: Int) {
         findNavController().navigate(
-            EpisodeFragmentDirections.actionEpisodeFragmentToEpisodeDetailFragment(id)
+            EpisodeFragmentDirections.actionEpisodeFragmentToEpisodeDetailFragment(
+                id
+            )
         )
+    }
+
+    override fun swipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener { episodeAdapter.refresh() }
     }
 }

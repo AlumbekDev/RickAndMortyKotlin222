@@ -9,21 +9,23 @@ import com.example.rickandmortykotlin22.data.network.apiservice.EpisodeApiServic
 import com.example.rickandmortykotlin22.data.network.dto.episode.EpisodeDto
 import com.example.rickandmortykotlin22.data.network.paginsources.EpisodePagingSource
 import com.example.rickandmortykotlin22.keeper.base.BaseRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class EpisodeRepository @Inject constructor(
-    private val service: EpisodeApiService,
+
+class EpisodeRepository(
+    private val service: EpisodeApiService
 ) : BaseRepository() {
 
-    fun fetchEpisodes(): LiveData<PagingData<EpisodeDto>> {
+    fun fetchEpisodes(): Flow<PagingData<EpisodeDto>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 10,
+                pageSize = 5
             ),
             pagingSourceFactory = {
                 EpisodePagingSource(service)
             }
-        ).liveData
+        ).flow
     }
 
     fun fetchEpisode(id: Int) = doRequest {

@@ -20,9 +20,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideLocationApiService() = retrofitClient.provideLocationApiService()
+    fun provideEpisodeApiService() = retrofitClient.provideEpisodeApiService()
 
     @Provides
     @Singleton
-    fun provideEpisodeApiService() = retrofitClient.provideEpisodeApiService()
+    fun provideLocationApiService() = retrofitClient.provideLocationApiService()
 }

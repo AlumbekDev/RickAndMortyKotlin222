@@ -3,61 +3,56 @@ package com.example.rickandmortykotlin22.ui.fragment.episode.detailepisode
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import kotlinx.coroutines.flow.collect
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.navArgs
+import com.example.rickandmortykotlin22.R
 import com.example.rickandmortykotlin22.databinding.FragmentEpisodeDetailBinding
-import com.example.rickandmortykotlin22.keeper.resource.Resource
+import com.example.rickandmortykotlin22.keeper.base.BaseFragment
+import com.example.rickandmortykotlin22.presentation.state.UIState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class EpisodeDetailFragment : Fragment() {
+class EpisodeDetailFragment :
+    BaseFragment<EpisodeDetailViewModel, FragmentEpisodeDetailBinding>(R.layout.fragment_episode_detail) {
+
     private val viewModel: EpisodeDetailViewModel by viewModels()
-    private lateinit var binding: FragmentEpisodeDetailBinding
-    private val args: EpisodeDetailFragmentArgs by navArgs()
+    private var _binding: FragmentEpisodeDetailBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = FragmentEpisodeDetailBinding.inflate(inflater, container, false)
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentEpisodeDetailBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialize()
-        setupObservers()
+        viewModel.fetchEpisode(EpisodeDetailFragmentArgs.fromBundle(requireArguments()).id)
+        setupRequests()
     }
 
-    private fun initialize() {
-        viewModel.fetchEpisode(args.id)
-    }
-
-    private fun setupObservers() = with(binding) {
-        lifecycleScope.launch {
-            viewModel.episodeState.collect {
-                when (it) {
-                    is Resource.Error -> {
-                        Toast.makeText(requireActivity(), it.massage, Toast.LENGTH_SHORT).show()
-                    }
-                    is Resource.Loading -> {
-
-                    }
-                    is Resource.Success -> {
-                        it.data?.let { data ->
+    private fun setupRequests() = with(binding) {
+        viewModel.episodeState.subscribe {
+            progressBar.isVisible = it is UIState.Loading
+            groupMain.isVisible = it !is UIState.Loading
+            when (it) {
+                is UIState.Loading -> {
+                }
+                is UIState.Error -> {
+                    Toast.makeText(requireContext(), it.massage, Toast.LENGTH_SHORT).show()
+                }
+                is UIState.Success -> {
+                    it.data?.let { data ->
                             name.text = data.name
                             airDate.text = data.air_date
                             episode.text = data.episode
                             url.text = data.url
                             created.text = data.created
-                        }
                     }
                 }
             }

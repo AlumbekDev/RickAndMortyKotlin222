@@ -13,6 +13,10 @@
         <action
             android:id="@+id/action_characterFragment_to_characterDetailFragment"
             app:destination="@id/characterDetailFragment" />
+
+        <action
+            android:id="@+id/action_characterFragment_to_myDialogFragment"
+            app:destination="@id/myDialogFragment" />
     </fragment>
 
     <fragment
@@ -43,6 +47,17 @@
             android:id="@+id/action_locationFragment_to_locationDetailFragment"
             app:destination="@id/locationDetailFragment" />
     </fragment>
+
+    <dialog
+        android:id="@+id/myDialogFragment"
+        android:name="com.example.rickandmortykotlin22.ui.fragment.dialog.MyDialogFragment"
+        android:label="fragment_my_dialog"
+        tools:layout="@layout/fragment_my_dialog" >
+        <argument
+            android:name="image"
+            app:argType="string"
+            android:defaultValue="null" />
+    </dialog>
     <fragment
         android:id="@+id/episodeDetailFragment"
         android:name="com.example.rickandmortykotlin22.ui.fragment.episode.detailepisode.EpisodeDetailFragment"

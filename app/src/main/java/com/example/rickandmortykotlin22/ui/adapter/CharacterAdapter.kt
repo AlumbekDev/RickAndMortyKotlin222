@@ -11,6 +11,7 @@ import com.example.rickandmortykotlin22.keeper.base.BaseComparator
 
 class CharacterAdapter(
     private val onItemClick: (id: Int) -> Unit,
+    kFunction1: (String) -> Unit,
 ) : PagingDataAdapter<CharacterDto, CharacterAdapter.CharacterViewHolder>(
     BaseComparator()
 ) {

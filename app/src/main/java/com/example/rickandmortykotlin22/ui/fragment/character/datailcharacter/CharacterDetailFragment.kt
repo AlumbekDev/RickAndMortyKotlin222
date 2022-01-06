@@ -47,7 +47,7 @@ class CharacterDetailFragment : Fragment() {
             viewModel.characterState.collect {
                 when (it) {
                     is Resource.Error -> {
-                        Toast.makeText(requireActivity(), it.massage, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
                     }
                     is Resource.Loading -> {}
                     is Resource.Success -> {

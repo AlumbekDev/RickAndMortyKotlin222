@@ -7,14 +7,13 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface EpisodeApiService {
-
-    @GET("episode")
+    @GET("/api/episode")
     suspend fun fetchEpisodes(
-        @Query("page") page: Int,
+        @Query("page") page: Int
     ): RickAndMortyResponse<EpisodeDto>
 
     @GET("/api/episode/{id}")
     suspend fun fetchEpisode(
-        @Path("id") id: Int,
+        @Path("id") id: Int
     ): EpisodeDto
 }
