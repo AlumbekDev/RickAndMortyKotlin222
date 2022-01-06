@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.coroutines.flow.collect
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,12 +13,12 @@ import coil.load
 import com.example.rickandmortykotlin22.R
 import com.example.rickandmortykotlin22.databinding.FragmentCharacterDetailBinding
 import com.example.rickandmortykotlin22.keeper.resource.Resource
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-@AndroidEntryPoint
+
 class CharacterDetailFragment : Fragment() {
-    private val viewModel: CharacterDetailViewModel by viewModels()
+    private val viewModel: CharacterDetailViewModel by viewModel()
     private lateinit var binding: FragmentCharacterDetailBinding
     private val args: CharacterDetailFragmentArgs by navArgs()
 

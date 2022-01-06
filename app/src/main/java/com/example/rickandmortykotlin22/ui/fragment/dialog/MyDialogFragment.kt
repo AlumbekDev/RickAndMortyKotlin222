@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.example.rickandmortykotlin22.databinding.FragmentMyDialogBinding
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MyDialogFragment : DialogFragment() {
 
     private var _binding: FragmentMyDialogBinding? = null

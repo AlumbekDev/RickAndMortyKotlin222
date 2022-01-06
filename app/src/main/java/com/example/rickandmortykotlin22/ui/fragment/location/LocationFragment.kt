@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -15,16 +15,14 @@ import com.example.rickandmortykotlin22.databinding.FragmentLocationBinding
 import com.example.rickandmortykotlin22.keeper.base.BaseFragment
 import com.example.rickandmortykotlin22.ui.adapter.LocationAdapter
 import com.example.rickandmortykotlin22.ui.adapter.paging.LoadStateAdapter
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class LocationFragment :
     BaseFragment<LocationViewModel, FragmentLocationBinding>(R.layout.fragment_location) {
 
     private lateinit var binding: FragmentLocationBinding
-    private val viewModel: LocationViewModel by viewModels()
+    private val viewModel: LocationViewModel by viewModel()
     private val locationAdapter = LocationAdapter(this::setupListeners)
 
     override fun onCreateView(

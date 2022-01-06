@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.rickandmortykotlin22.R
 import com.example.rickandmortykotlin22.databinding.FragmentEpisodeDetailBinding
 import com.example.rickandmortykotlin22.keeper.base.BaseFragment
 import com.example.rickandmortykotlin22.presentation.state.UIState
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class EpisodeDetailFragment :
     BaseFragment<EpisodeDetailViewModel, FragmentEpisodeDetailBinding>(R.layout.fragment_episode_detail) {
 
-    private val viewModel: EpisodeDetailViewModel by viewModels()
+    private val viewModel: EpisodeDetailViewModel by viewModel()
     private var _binding: FragmentEpisodeDetailBinding? = null
     private val binding get() = _binding!!
 

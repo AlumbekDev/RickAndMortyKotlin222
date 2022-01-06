@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -16,17 +15,16 @@ import com.example.rickandmortykotlin22.databinding.FragmentEpisodeBinding
 import com.example.rickandmortykotlin22.keeper.base.BaseFragment
 import com.example.rickandmortykotlin22.ui.adapter.EpisodeAdapter
 import com.example.rickandmortykotlin22.ui.adapter.paging.LoadStateAdapter
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlinx.coroutines.launch
 
 
-@AndroidEntryPoint
 class EpisodeFragment :
     BaseFragment<EpisodeViewModel, FragmentEpisodeBinding>(R.layout.fragment_episode) {
 
     private lateinit var binding: FragmentEpisodeBinding
-    private val viewModel: EpisodeViewModel by viewModels()
+    private val viewModel: EpisodeViewModel by viewModel()
     private val episodeAdapter = EpisodeAdapter(this::setupListeners)
 
     override fun onCreateView(

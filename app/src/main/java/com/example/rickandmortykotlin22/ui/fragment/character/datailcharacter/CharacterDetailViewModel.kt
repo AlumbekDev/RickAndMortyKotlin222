@@ -2,18 +2,16 @@ package com.example.rickandmortykotlin22.ui.fragment.character.datailcharacter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.collect
 import com.example.rickandmortykotlin22.data.network.dto.character.CharacterDto
 import com.example.rickandmortykotlin22.data.repositories.CharacterRepository
 import com.example.rickandmortykotlin22.keeper.resource.Resource
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
+
 class CharacterDetailViewModel @Inject constructor(
     private val repository: CharacterRepository,
 ) : ViewModel() {

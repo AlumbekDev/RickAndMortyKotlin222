@@ -6,18 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.example.rickandmortykotlin22.R
 import com.example.rickandmortykotlin22.databinding.FragmentLocationDetailBinding
 import com.example.rickandmortykotlin22.keeper.base.BaseFragment
 import com.example.rickandmortykotlin22.presentation.state.UIState
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class LocationDetailFragment :
     BaseFragment<LocationDetailViewModel, FragmentLocationDetailBinding>(R.layout.fragment_location_detail) {
 
-    private val viewModel: LocationDetailViewModel by viewModels()
+    private val viewModel: LocationDetailViewModel by viewModel()
     private var _binding: FragmentLocationDetailBinding? = null
     private val binding get() = _binding!!
 
